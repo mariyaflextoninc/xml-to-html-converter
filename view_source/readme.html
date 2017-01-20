@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Read me</title>
+    <script type="text/javascript" src="JQuery/jquery-1.8.3.js"></script>
+    <style>
+     p{
+      margin-left:15px;
+      font-size: 20px;
+     }
+     
+    </style>
+  </head>
+  
+  <body>
+      <h1 style = "text-align:center">Read Me</h1>
+      <h2>Description:</h2>
+      <p>XML to HTML converter converts xml in a particular format to html table.The format which I am using is given below.</p>
+      
+      <p style="margin-left: 1in">&lt;Container&gt;</p>
+      <p style="margin-left: 1.5in">&lt;row&gt;</p>
+      <p style="margin-left: 2in">&lt;column&gt;</p>
+      <p style="margin-left: 2.5in">&lt;any element&gt;&lt;/any element&gt;</p>
+      <p style="margin-left: 2in">&lt;/column&gt;</p>
+      <p style="margin-left: 1.5in">&lt;/row&gt;</p>
+      <p style="margin-left: 1in">&lt;/Container&gt;</p>
+      <br>
+      
+      <p>Click on the 'XML to HTML' button to
+      convert xml string to html table. The html table along with a 'Save'
+      button will be displayed on the right side.</p>
+      
+      
+      <p >You can give values inside the fields
+      and if you press save the div for xml will show two xml strings.</p>
+      <p >New modified XML string at the top and
+      old xml string input at the bottom.</p>
+      
+      <p >The 'View source' button will display
+      the source code of this library.</p>
+      <br>
+
+      <p >Note: In the above xml '&lt;Container&gt;'
+       is the root tag .You can use any name for the root tag as you wish.
+      But you cannot modify the name of child elements. If you want to
+      modify then you need to modify the library. '&lt;any element &gt;'
+      node can be label, textbox, checkbox, radiobutton etc.</p>
+      <br>
+
+      <h2>Working:</h2>
+      <p style="text-indent: 0.26in;"><br>
+      </p>
+      <p style="text-indent: 0.26in;"><U><b>Creating
+      HTML table</b></U>.</p>
+      <br>
+      
+      <ol>
+        <li><p >Input is an XML String. (In my
+        application I have hard-coded the XML string. You can give the data
+        either by extracting the XML string from an XML file or from a
+        database.). Output is an HTML string which has to be appended to the
+        page for rendering.</p>
+        <li><p >Parse the XML string to an XML
+        object using method 'parseXML()' in <b>ParseXMLContent</b> class.</p>
+        <li><p >Extract all 'row' nodes .Traverse
+        through each row till you find the element. While traversing each
+        row append the HTML string with tag '&lt;tr'&gt; in the
+        '_loopXmlElements()' method.</p>
+        <li><p >When we find the element node (eg
+        : &lt;label&gt;,&lt;textbox&gt; etc. in my XML) , we create an
+        object of Element class and then we set its properties using setter
+        methods defined in <b>Element</b> class.</p>
+        <li><p >After setting the properties call
+        getElement() method of <b>ElementFactory</b>  class  and pass the
+        element object we have created in the above step.</p>
+        <li><p >The 'getElement()' method in the
+        <b>ElementFactory</b> class checks the type of element and call
+        '_getHtmlContent()' method defined in corresponding class of the
+        element(eg : if type is 'label' it calls the Label class' method.)</p>
+        <li><p >This _getHtmlContent retrieves all
+        the properties which has been set for each element using getters
+        defined in <b>Element</b> class. It creates corresponding HTML
+        element and append the properties as attributes to the element.</p>
+        <li><p >The element created is returned
+        and received by '_ getHtml()' method in <b>ParseXMLContent</b> class
+        and then it is given back to '_loopXmlElements()' from there to
+        '_createHTML()' for rendering the content to div.</p>
+      </ol>
+     
+      <br>
+      <p >      <U><b>Saving HTML table</b></U></p>
+      <br>
+      
+      <ol>
+        <li><p > In the _saveXML() method , we
+        traverse through the HTML table object till we find the HTML element
+        inside &lt;td&gt;.Same time we traverse through XML object and find
+        its corresponding element field.</p>
+        <li><p >The '_modifyXML()' method receives
+        the HTML element object as well as XML element object. Then it
+        checks the type of element (if 'label','radio' etc.), take the
+        values and modify the XML either by adding new attribute as
+        'is_checked = “true” if a radiobutton or checkox or “value
+        ='taken value'” if it is a text or by modifying the already
+        existing properties of the element node.</p>
+        <li><p >Convert the modified xml object
+        back to string and then append it as new xml.</p>
+      </ol>
+     
+      <br>
+      <h2>Modification:</h2>
+      <br>
+     
+      <p >If you wish to add other html
+      elements to your html table.</p>
+      <br>
+     
+      <ul>
+        <li><p >Modify your xml string according
+        to your new element and assign new xml in _initialize() method of
+        <b>ParseXMLContent </b>class.</p>
+        <li><p >Create a class with same name as
+        your new html element in the e<b>lement.js</b> page. You can follow
+        the same way like other classes which I have created (eg : Label
+        class).</p>
+        <li><p >If you have properties other than
+        I have given, you can declare that property as a private variable
+        inside <b>Element</b> class in e<b>lement.js</b> page. You must also
+        define getters and setters for that property inside the same class.</p>
+        <li><p >Declare name of your new element
+        (which you have given in the XML) as constant inside <b>ElementProperty</b>
+        class in e<b>lementfactory.js</b> page and modify the getElement
+        method of <b>ElementFactory</b> in order to access your new class.</p>
+        <li><p >Modify the _getHtml() method in
+        <b>parsexml.js</b> and set properties of your new element.</p>
+      </ul>
+     
+      <br>
+      <p style="margin-left: 0.44in; margin-bottom: 0in">Modifying the xml
+      when saving.</p>
+      <p style="margin-left: 0.44in; margin-bottom: 0in"><br>
+      </p>
+     
+      <ul>
+        <li><p >Modify the _saveXML() method in
+        <b>ParseXMLContent</b> class.</p>
+      </ul>
+     
+      <p style="margin-left: 0.44in; margin-bottom: 0in"><br>
+      </p>
+      <p style="margin-left: 0.44in; margin-bottom: 0in"><br>
+      </p>
+      <p >Note: All private
+      method names are preceded by an '_'.</p><br>
+  
+  </body>
+</html>
